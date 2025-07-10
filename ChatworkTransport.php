@@ -40,7 +40,7 @@ class ChatworkTransport extends AbstractTransport
 
     public function __toString(): string
     {
-        return sprintf('chatwork://%s?room_id=%s', $this->getEndpoint(), $this->roomId);
+        return \sprintf('chatwork://%s?room_id=%s', $this->getEndpoint(), $this->roomId);
     }
 
     public function supports(MessageInterface $message): bool
@@ -68,7 +68,7 @@ class ChatworkTransport extends AbstractTransport
             ->body($message->getSubject())
             ->getMessageBody();
 
-        $endpoint = sprintf('https://%s/v2/rooms/%s/messages', $this->getEndpoint(), $this->roomId);
+        $endpoint = \sprintf('https://%s/v2/rooms/%s/messages', $this->getEndpoint(), $this->roomId);
         $response = $this->client->request('POST', $endpoint, [
             'body' => $messageBody,
             'headers' => [
@@ -86,7 +86,7 @@ class ChatworkTransport extends AbstractTransport
             $originalContent = $message->getSubject();
             $result = $response->toArray(false);
             $errors = $result['errors'];
-            throw new TransportException(sprintf('Unable to post the Chatwork message: "%s" (%d: %s).', $originalContent, $statusCode, implode(', ', $errors)), $response);
+            throw new TransportException(\sprintf('Unable to post the Chatwork message: "%s" (%d: %s).', $originalContent, $statusCode, implode(', ', $errors)), $response);
         }
 
         return new SentMessage($message, (string) $this);
